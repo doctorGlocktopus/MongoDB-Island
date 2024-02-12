@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('background.png');
+  background-image: url('./img/background.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -16,13 +16,12 @@ body {
   margin: 0;
 }
 
-.overlay {
-  background-image: url('pirat.png');
+.pirat-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: -9;
+  height: 67%;
+  right: 0;
+  bottom: 6%;
 }
 
 code {
@@ -38,6 +37,28 @@ code {
   border: 1px solid #e5d1a4;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #bf8e45;
+  border: 1px solid #e5d1a4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 80px;
+}
+
+.success-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #bf8e45;
+  border: 1px solid #e5d1a4;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 80px;
 }
 
 h1 {
