@@ -140,7 +140,6 @@ const QuestGame = () => {
           {errorMessage}
         </div>
       )}
-        :
       {successMessage && (
         <div className="success-container">
           {successMessage}
