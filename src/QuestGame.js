@@ -1,5 +1,5 @@
 // QuestGame.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Task from './Task';
 import piratBild from './img/pirat.png'; 
 
@@ -7,7 +7,8 @@ const QuestGame = () => {
   const [currentTask, setCurrentTask] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSucessMessage] = useState("");
-
+  const [crewData, setCrewData] = useState([]);
+  // const [tasks, setTasks] = useState([])
   const tasks = [
     {
       id: 1,
@@ -123,8 +124,27 @@ const QuestGame = () => {
     },
   ];
 
+  useEffect(() => {
+    console.log(1)
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/crew');
+        const data = await response.json();
+        console.log(data)
+        setCrewData(data);
+      } catch (error) {
+        console.error('Error fetching crew data:', error);
+      }
+    };
+
+    if (crewData.length === 0) {
+      fetchData();
+    }
+  }, [crewData, tasks])
+  
+
   const handleQuerySubmit = (query) => {
-    if(tasks[currentTask -1 ].expectedQuery.replace(/\s/g, "").toLowerCase() === query.replace(/\s/g, "").toLowerCase()) {
+    if(tasks[currentTask -1 ].expectedQuery.replace(/\s/g, "").replace(/['`]/g, '"').toLowerCase() === query.replace(/\s/g, "").replace(/['`]/g, '"').toLowerCase()) {
         setCurrentTask(currentTask + 1);
         setErrorMessage("")
         setSucessMessage(tasks[currentTask -1].success)
@@ -143,6 +163,13 @@ const QuestGame = () => {
       {successMessage && (
         <div className="success-container">
           {successMessage}
+        </div>
+      )}
+      {crewData && (
+        <div className="success-container">
+          {crewData.map(mate => (
+            <span key={mate._id}>{mate.Beruf}</span>
+          ))}
         </div>
       )}
       <div className="background-container">
