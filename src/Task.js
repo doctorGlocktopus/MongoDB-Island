@@ -1,4 +1,3 @@
-// Task.js
 import React, { useState } from 'react';
 
 const Task = ({ task, onQuerySubmit }) => {
@@ -7,7 +6,7 @@ const Task = ({ task, onQuerySubmit }) => {
 
   const handleInputChange = (e) => {
     const userInput = e.target.value;
-  
+
     if (userInput.includes(".")) {
       const lastDotIndex = userInput.lastIndexOf(".");
       const searchQuery = userInput.slice(lastDotIndex + 1);
@@ -15,22 +14,33 @@ const Task = ({ task, onQuerySubmit }) => {
       setSuggestions(getMatchingSuggestions(searchQuery));
     } else {
       setQuery(userInput);
-  
+
       const matchingSuggestions = getMatchingSuggestions(userInput);
       setSuggestions(matchingSuggestions);
     }
   };
-  
 
   const handleSuggestionClick = (suggestion) => {
-    setQuery(prevQuery => prevQuery + suggestion + ' ');
+
+    const lastDotIndex = query.lastIndexOf(".");
+    const newQuery = query.slice(0, lastDotIndex + 1) + suggestion;
+    setQuery(newQuery);
     setSuggestions([]);
   };
 
   const getMatchingSuggestions = (input) => {
-    const staticSuggestions = ['find({})', 'insert', 'update', 'delete', 'db.', 'aggregate({})', '$lt', '$gt'];
-    return staticSuggestions.filter(suggestion =>
-      suggestion.toLowerCase().includes(input.toLowerCase())
+        // let staticSuggestions = ['db.'];
+
+    // if (input.includes("db.")) {
+    //   console.log(input);
+    //   staticSuggestions = ['crew.', 'items.', 'stash'];
+
+    // }
+    //   return staticSuggestions.filter((suggestion) => suggestion.toLowerCase().includes(input.toLowerCase())
+    // );
+    let staticSuggestions = ['db.','crew.', 'items.', 'stash.' ,'find({})', 'aggregate({})'];
+
+    return staticSuggestions.filter((suggestion) => suggestion.toLowerCase().includes(input.toLowerCase())
     );
   };
 
@@ -57,5 +67,4 @@ const Task = ({ task, onQuerySubmit }) => {
     </div>
   );
 };
-
 export default Task;
