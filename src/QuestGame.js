@@ -8,9 +8,7 @@ const QuestGame = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSucessMessage] = useState("");
   const [queryTableData, setQueryTableData] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [entriesPerPage, setEntriesPerPage] = useState(8);
+  const [tasks, setTasks] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,10 +55,7 @@ const QuestGame = () => {
       setErrorMessage(tasks[currentTask - 1].error);
     }
   };
-
-  const indexOfLastEntry = currentPage * entriesPerPage;
-  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = queryTableData.slice(indexOfFirstEntry, indexOfLastEntry);
+  
 
   return (
     <div>
@@ -74,28 +69,6 @@ const QuestGame = () => {
           {successMessage}
         </div>
       )}
-      {currentEntries && currentEntries.length > 0 && (
-        <div className="success-container">
-          <div className="mongo-table">
-            <div className="mongo-row mongo-header">
-              {Object.keys(currentEntries[0]).map((key) => (
-                <div className="mongo-cell" key={key}>
-                  {key}
-                </div>
-              ))}
-            </div>
-            {currentEntries.map((row, index) => (
-              <div className="mongo-row" key={index}>
-                {Object.values(row).map((value, index) => (
-                  <div className="mongo-cell" key={index}>
-                    {value}
-                  </div>
-                ))}
-              </div>
-            ))}
-            </div>
-        </div>
-      )}
       {queryTableData && queryTableData.length > 0 && (
         <div className="success-container">
           <div className="mongo-table">
@@ -106,23 +79,15 @@ const QuestGame = () => {
                 </div>
               ))}
             </div>
-            {queryTableData.length > entriesPerPage && (
-            <div className="pagination-container">
-              <button
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              <span>{currentPage}</span>
-              <button
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={indexOfLastEntry >= queryTableData.length}
-              >
-                Next
-              </button>
-            </div>
-          )}
+            {queryTableData.map((row, index) => (
+              <div className="mongo-row" key={index}>
+                {Object.values(row).map((value, index) => (
+                  <div className="mongo-cell" key={index}>
+                    {value}
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       )}
