@@ -44,6 +44,19 @@ const Task = ({ task, onQuerySubmit }) => {
     );
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      if (suggestions.length > 0) {
+        // Wenn es Suggestions gibt, wähle die erste Suggestion aus
+        const closestSuggestion = suggestions[0];
+        const lastDotIndex = query.lastIndexOf(".");
+        setQuery((prevQuery) => prevQuery.slice(0, lastDotIndex + 1) + closestSuggestion);
+        setSuggestions([]); // Schließe die Dropdown-Liste
+      }
+      onQuerySubmit(query); // Rufe onQuerySubmit mit dem aktualisierten Query-Wert auf
+    }
+  };
+
   return (
     <div>
       <h2>Aufgabe {task.id}</h2>
@@ -53,6 +66,7 @@ const Task = ({ task, onQuerySubmit }) => {
         value={query}
         onChange={handleInputChange}
         placeholder={task.tipp}
+        onKeyDown={handleKeyPress}
       />
       {suggestions.length > 0 && (
         <ul>
