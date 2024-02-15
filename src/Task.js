@@ -3,10 +3,35 @@ import React, { useState } from 'react';
 
 const Task = ({ task, onQuerySubmit }) => {
   const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
-  const handleSubmit = () => {
-    onQuerySubmit(query);
-    setQuery('');
+  const handleInputChange = (e) => {
+    const userInput = e.target.value;
+  
+    if (userInput.includes(".")) {
+      const lastDotIndex = userInput.lastIndexOf(".");
+      const searchQuery = userInput.slice(lastDotIndex + 1);
+      setQuery(userInput);
+      setSuggestions(getMatchingSuggestions(searchQuery));
+    } else {
+      setQuery(userInput);
+  
+      const matchingSuggestions = getMatchingSuggestions(userInput);
+      setSuggestions(matchingSuggestions);
+    }
+  };
+  
+
+  const handleSuggestionClick = (suggestion) => {
+    setQuery(prevQuery => prevQuery + suggestion + ' ');
+    setSuggestions([]);
+  };
+
+  const getMatchingSuggestions = (input) => {
+    const staticSuggestions = ['find({})', 'insert', 'update', 'delete', 'db.', 'aggregate({})', '$lt', '$gt'];
+    return staticSuggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(input.toLowerCase())
+    );
   };
 
   return (
@@ -16,10 +41,19 @@ const Task = ({ task, onQuerySubmit }) => {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleInputChange}
         placeholder={task.tipp}
       />
-      <button onClick={handleSubmit}>Einreichen</button>
+      {suggestions.length > 0 && (
+        <ul>
+          {suggestions.map((suggestion, index) => (
+            <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+              {suggestion}
+            </li>
+          ))}
+        </ul>
+      )}
+      <button onClick={() => onQuerySubmit(query)}>Einreichen</button>
     </div>
   );
 };
