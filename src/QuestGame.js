@@ -4,7 +4,7 @@ import Task from './Task';
 import piratBild from './img/pirat.png'; 
 
 const QuestGame = () => {
-  const [currentTask, setCurrentTask] = useState(1);
+  const [currentTask, setCurrentTask] = useState(2);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSucessMessage] = useState("");
   const [queryTableData, setQueryTableData] = useState([]);
@@ -27,18 +27,16 @@ const QuestGame = () => {
   }, [tasks])
 
   const handleQuerySubmit = async (query) => {
-    if (
-      tasks[currentTask - 1].expectedQuery
-        .replace(/\s/g, "")
-        .replace(/['`]/g, '"')
-        .toLowerCase() ===
-      query.replace(/\s/g, "").replace(/['`]/g, '"').toLowerCase()
+    const fomattedQuerry = query.replace(/\s/g, "").replace(/['`"]/g, "'")
+    const formattedExpectedQuery = tasks[currentTask - 1].expectedQuery.replace(/\s/g, "").replace(/['`"]/g, "'")
+    if ( formattedExpectedQuery === fomattedQuerry  
     ) {
       setCurrentTask(currentTask + 1);
       setErrorMessage("");
       setSucessMessage(tasks[currentTask - 1].success);
 
       try {
+        console.log(formattedExpectedQuery)
         const requestOptions = {
           method: 'POST',
           headers: {
