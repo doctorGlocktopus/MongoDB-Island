@@ -28,24 +28,20 @@ const Task = ({task, onQuerySubmit}) => {
 
     const getMatchingSuggestions = (input) => {
         let staticSuggestions = ['db.'];
-
+    
         if (input.includes("db.")) {
-            console.log(input);
-            staticSuggestions = ['crew.', 'items.', 'stash'];
-
+            staticSuggestions = ['crew.', 'items.', 'stash.', 'logs.'];
+            if (input.includes('crew.') || input.includes('items.') || input.includes('stash.') || input.includes('logs.')) {
+                staticSuggestions = ['find({})', 'aggregate({})'];
+            }
         }
-        console.log({staticSuggestions})
-
+    
         const lastDotIndex = input.lastIndexOf(".");
         const lastWord = input.slice(lastDotIndex + 1);
-
-        return staticSuggestions.filter((suggestion) => suggestion.toLowerCase().includes(lastWord.toLowerCase())
-        );
-        // let staticSuggestions = ['db.','crew.', 'items.', 'stash.' ,'find({})', 'aggregate({})'];
-        //
-        // return staticSuggestions.filter((suggestion) => suggestion.toLowerCase().includes(input.toLowerCase())
-        // );
+    
+        return staticSuggestions.filter((suggestion) => suggestion.toLowerCase().includes(lastWord.toLowerCase()));
     };
+    
 
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
